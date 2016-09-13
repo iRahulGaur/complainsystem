@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Complain</string>
+    <string name="url">http://192.168.0.104/mydata/</string>
+    <string name="title_activity_review">reviewActivity</string>
+</resources>
