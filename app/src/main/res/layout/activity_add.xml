@@ -49,8 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Select Complain Type"
-        android:id="@+id/textView12" />
+        android:text="Select Complain Type" />
 
     <Spinner
         android:layout_width="match_parent"

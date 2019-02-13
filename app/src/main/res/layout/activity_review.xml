@@ -8,8 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Please only complete the resolve process when you are satisfied with the result of the worker and everything id working fine. Thank you"
-        android:id="@+id/textView18" />
+        android:text="Please only complete the resolve process when you are satisfied with the result of the worker and everything id working fine. Thank you" />
 
     <ImageView
         android:layout_width="match_parent"

@@ -1,23 +1,29 @@
 package com.rahul.complainsystem;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -27,7 +33,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ViewActivity extends AppCompatActivity {
@@ -47,11 +52,11 @@ public class ViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        view = (Button)findViewById(R.id.button);
-        add = (Button)findViewById(R.id.button2);
-        review = (Button)findViewById(R.id.resolveButton);
-        cno = (EditText)findViewById(R.id.editTextCno);
-        lv = (ListView)findViewById(R.id.listView);
+        view = (Button) findViewById(R.id.button);
+        add = (Button) findViewById(R.id.button2);
+        review = (Button) findViewById(R.id.resolveButton);
+        cno = (EditText) findViewById(R.id.editTextCno);
+        lv = (ListView) findViewById(R.id.listView);
 
         //newResolve = al.get(7).toString();
 
@@ -66,20 +71,32 @@ public class ViewActivity extends AppCompatActivity {
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(newResolve.contains(" ")){
+                if (newResolve.contains(" ")) {
                     Intent i = new Intent();
                     i.setClass(ViewActivity.this, ReviewActivity.class);
                     i.putExtra("1", num);
-                    i.putExtra("2",resolve);
+                    i.putExtra("2", resolve);
                     startActivity(i);
-            }
+                }
             }
         });
         view.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("HardwareIds")
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-                imei = telephonyManager.getDeviceId();
+                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    Activity#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for Activity#requestPermissions for more details.
+                    imei = telephonyManager.getDeviceId();
+                    return;
+                }
                 num = cno.getText().toString();
                 System.out.println("This is newResolve "+newResolve+" and this is resolve2 "+resolve2);
                 if(num.equals("")){

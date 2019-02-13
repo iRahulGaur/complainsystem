@@ -1,9 +1,15 @@
 package com.rahul.complainsystem;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -16,25 +22,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Date;
@@ -77,7 +75,7 @@ public class AddActivity extends AppCompatActivity {
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date now = new Date();
-        date = formatter.format(now)+"";
+        date = formatter.format(now) + "";
 
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +106,7 @@ public class AddActivity extends AppCompatActivity {
         });
 
         add.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 name = nametf.getText().toString();
@@ -123,16 +122,25 @@ public class AddActivity extends AppCompatActivity {
                 int s = c.get(Calendar.SECOND);
                 int month = c.get(Calendar.MONTH);
                 int year = c.get(Calendar.YEAR);
-                System.out.println(" d "+d+" h "+h+" ");
+                System.out.println(" d " + d + " h " + h + " ");
                 String[] nameArr = name.split(" ");
                 //date = d+"/"+month+"/"+year;
-                System.out.println(date+" date ");
-                cno = ""+nameArr[0]+d+m+s;
-                System.out.println(" cno "+cno);
-                TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-                imei = telephonyManager.getDeviceId();
-                System.out.println(" imei "+imei);
-
+                System.out.println(date + " date ");
+                cno = "" + nameArr[0] + d + m + s;
+                System.out.println(" cno " + cno);
+                TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    Activity#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for Activity#requestPermissions for more details.
+                    imei = telephonyManager.getDeviceId();
+                    System.out.println(" imei "+imei);
+                    return;
+                }
                 System.out.println("Name : "+name+" Block : "+block+" House : "+house+" Phone : "+phone+" Detaill : "+detail);
 
                 complainnum = new ArrayList<complain>();
